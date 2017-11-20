@@ -352,12 +352,16 @@ function AddDictcn(objApp) {
 
 function DictcnAdd2Doc() {
     var objBrowser = KMGetCurrentBrowserObject();
-    if (!objBrowser)
-        return;
+    if (!objBrowser) return false;
     //
-    objBrowser.ExecuteScript(AddDictcn.toString(), function(ret){
-        objBrowser.ExecuteFunction1("AddDictcn", objApp, null);
-    })
+    var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
+    var scriptName = pluginPath + 'KMDictcn.js';
+    //
+    //objBrowser.ExecuteScript(AddDictcn.toString(), function(ret){
+    //    objBrowser.ExecuteFunction1("AddDictcn", objApp, null);
+    //})
+    //
+    objBrowser.ExecuteScriptFile(scriptName, null);
     // 兼容模式??
     // WizAlert(objHtmlDocument.compatMode);
     // if (objHtmlDocument.compatMode == 'BackCompat') {
