@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Import Files</title>
+    <link rel="stylesheet" type="text/css" href="base_style.css"/>
+    <style type="text/css">
+        div
+        {
+            font-size: 1em;
+			word-wrap:break-word;
+        }
+    </style>
+</head>
+<body>
+
+    <script language="javascript">
+
+
+        var WizExplorerApp = window.external;
+        //
+        var objApp = WizExplorerApp;
+        var objWindow = objApp.Window;
+        //var objHtmlDocument = objWindow.CurrentDocumentHtmlDocument;
+        var objBrowser = objWindow.CurrentDocumentBrowserObject;
+        //
+        var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
+        var languangeFileName = pluginPath + "plugin.ini";
+        //
+        var htmltext = "";
+        var bGetHighlight = false;
+        var bGetNote = false;
+		/*
+        //
+        if (htmltext == "") {
+            var arrLinks = objHtmlDocument.anchors;
+            for (var i = 0; i < arrLinks.length; i++) {
+                var elem = arrLinks[i];
+                //
+                var name = elem.name;
+                //
+                if (name == null || name == "") {
+                    continue;
+                }
+                //
+                var text = elem.innerText;
+                if (text == null || text == "") {
+                    text = name;
+                }
+                //
+                htmltext += "<h3>[NOTE] <a href=\"javascript:void(0);\" onclick=\"gotoBookmark('" + name + "');\">" + text + "</a></h3>";
+            }
+        }
+        //
+        if (htmltext == "") {
+            var arr = objHtmlDocument.all;
+            for (var i = 0; i < arr.length; i++) {
+                var elem = arr[i];
+                //
+                var tagName = elem.tagName.toLowerCase();
+                //
+                if (tagName == "h1") {
+                    htmltext += "<h3><a href=\"javascript:void(0);\" onclick=\"gotoElem('" + elem.offsetTop + "');\">" + elem.innerText + "</a></h3>";
+                }
+                else if (tagName == "h2") {
+                    htmltext += "<h3><a href=\"javascript:void(0);\" onclick=\"gotoElem('" + elem.offsetTop + "');\">" + elem.innerText + "</a></h3>";
+                }
+                else if (tagName == "h3") {
+                    htmltext += "<h3><a href=\"javascript:void(0);\" onclick=\"gotoElem('" + elem.offsetTop + "');\">" + elem.innerText + "</a></h3>";
+                }
+                else if (tagName == "h4") {
+                    htmltext += "<h3><a href=\"javascript:void(0);\" onclick=\"gotoElem('" + elem.offsetTop + "');\">" + elem.innerText + "</a></h3>";
+                }
+                else if (tagName == "h5") {
+                    htmltext += "<h3><a href=\"javascript:void(0);\" onclick=\"gotoElem('" + elem.offsetTop + "');\">" + elem.innerText + "</a></h3>";
+                }
+                else if (tagName == "h6") {
+                    htmltext += "<h3><a href=\"javascript:void(0);\" onclick=\"gotoElem('" + elem.offsetTop + "');\">" + elem.innerText + "</a></h3>";
+                }
+            }
+        }
+        //
+        if (htmltext == "") {
+            var arr = objHtmlDocument.getElementsByTagName("STRONG");
+            for (var i = 0; i < arr.length; i++) {
+                var elem = arr[i];
+                //
+                var text = elem.innerText;
+                if (text != null && text != "") {
+                    htmltext += "<h3><a href=\"javascript:void(0);\" onclick=\"gotoElem('" + elem.offsetTop + "');\">" + elem.innerText + "</a></h3>";
+                }
+                //
+            }
+        }
+        if (htmltext == "") {
+            var arr = objHtmlDocument.getElementsByTagName("B");
+            for (var i = 0; i < arr.length; i++) {
+                var elem = arr[i];
+                //
+                var text = elem.innerText;
+                if (text != null && text != "") {
+                    htmltext += "<h3><a href=\"javascript:void(0);\" onclick=\"gotoElem('" + elem.offsetTop + "');\">" + elem.innerText + "</a></h3>";
+                }
+                //
+            }
+        }
+		*/
+		get_highlight();
+		
+		get_note();
+
+//      get_finder();
+		
+		/*
+        if (htmltext == "") {
+            document.write("<h3>" + objApp.LoadStringFromFile(languangeFileName, "strNoOutlineData") + "</h3>");
+        }
+        else {
+            document.write(htmltext);
+        }
+		*/
+		
+		
+ 
+		// Get full XPath of an element
+		//function getElementXPath(elt)
+		//{
+		//	var path = "";
+		//	for (; elt && elt.nodeType == 1; elt = elt.parentNode)
+		//	{
+		//		idx = getElementIdx(elt);
+		//		xname = elt.tagName;
+		//		if (idx > 1) xname += "[" + idx + "]";
+		//		path = "/" + xname + path;
+		//	}
+		 
+		//	return path;	
+		//}
+		 
+		// Get Idx of an element
+		//function getElementIdx(elt)
+		//{
+		//	var count = 1;
+		//	for (var sib = elt.previousSibling; sib ; sib = sib.previousSibling)
+		//	{
+		//		if(sib.nodeType == 1 && sib.tagName == elt.tagName)	count++
+		//	}
+		 
+		//	return count;
+		//}
+		
+        //
+		function gotoElem(pos) {
+		    //
+		    function GotoElem(pos) {
+		        try{
+		            document.defaultView.scrollTo(document.body.offsetLeft, pos);
+		        } catch (e) {
+		            console.log(e.toString());
+		        }
+		    }
+            //
+		    if (!objBrowser)
+		        return;
+		    //
+		    objBrowser.ExecuteScript(GotoElem.toString(), function (ret) {
+		        //
+		        objBrowser.ExecuteFunction1("GotoElem", pos, null);
+		    });
+            //objHtmlDocument.defaultView.scrollTo(objHtmlDocument.body.offsetLeft, pos);
+        }
+        //
+        //function gotoBookmark(name) {
+        //    var elem = objHtmlDocument.getElementsByName(name);
+        //    if (elem == null)
+        //        return;
+        //    if (elem.length == "undefined") {
+        //        elem.scrollIntoView(true);
+        //    }
+        //    else {
+        //        elem[0].scrollIntoView(true);
+        //    }
+        //}
+		
+		
+		
+        function get_note() {
+            //
+            function GetNote() {
+                var arrNoteAttributes = [];
+                //
+                var arrNote = document.getElementsByTagName("SPAN");
+                for (i = 0; i < arrNote.length; i++) {
+                    var elem = arrNote[i];
+                    if (elem.id.search(/WizKMComment_.+/) > -1 || elem.getAttribute('anno-wiz-span') == 'anno-wiz-span') {
+                        var att = {
+                            "offsettop": elem.offsetTop,
+                            "innertext": elem.innerText,
+                            "title": elem.title
+                        };
+                        arrNoteAttributes.push(att);
+                    }
+                }
+                return JSON.stringify(arrNoteAttributes);
+            }
+            //
+            if (!objBrowser)
+                return;
+            //
+            objBrowser.ExecuteScript(GetNote.toString(), function (ret) {
+                //
+                objBrowser.ExecuteFunction0("GetNote", function (json) {
+                    //
+                    if (json && json.length > 0) {
+                        var ret = JSON.parse(json);
+                        //
+                        htmltext += "<BR><B>NOTE List</B><div  style='height:1px;background-color:#000000;line-height:1px;clear:both;display:block;overflow:hidden'></div>";
+                        //
+                        for (var i = 0; i < ret.length; i++) {
+                            var offsettop = ret[i].offsettop;
+                            var innertext = ret[i].innertext;
+                            var title = ret[i].title;
+                            //
+                            htmltext += "<div style=\"background-color:#FFFFee;border-style:double;word-wrap:break-word\">"
+                            htmltext += "<B>[ <a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a> ]</B>";
+                            htmltext += "<BR>" + title + "</div>";
+                        }
+                    }
+                    //
+                    bGetNote = true;
+                    Show();
+                });
+            });
+		}
+		/*
+		function KMDictPlayAudio(urlAudio) {
+			var doc = document;
+			var objDictAudio = doc.getElementById("KMDictAudioObjID");
+			if (objDictAudio) { objDictAudio.removeNode(true); }
+			var htmlAudio = "<object id='KMDictAudioObjID' style='display:none' classid=\"clsid:22D6F312-B0F6-11D0-94AB-0080C74C7E95\">";
+			htmlAudio += "<param name=\"AutoStart\" value=\"1\" />";
+			htmlAudio += "<param name=\"FileName\" value=\"" + urlAudio + "\" />";
+			htmlAudio += "</object>";
+			doc.body.innerHTML += htmlAudio;
+		}*/
+		
+
+        function get_finder() {
+            //
+            function GetFinder() {
+                var arrFinderAttributes = [];
+                //
+                var arrFinder = document.getElementsByTagName("SPAN");
+                for (var i = 0; i < arrFinder.length; i++) {
+                    var elem = arrFinder[i];
+                    if (elem.id.search(/wizkm_highlight.+/) > -1) {
+                        var att = {
+                            "offsettop": elem.offsetTop,
+                            "innertext": elem.innerText,
+                            "title": elem.title
+                        };
+                        arrFinderAttributes.push(att);
+                    }
+                }
+                return arrFinderAttributes;
+            }
+            //
+            if (!objBrowser)
+                return;
+            //
+            objBrowser.ExecuteScript(GetFinder.toString(), function (ret) {
+                //
+                objBrowser.ExecuteFunction0("GetFinder", function (ret) {
+                    //
+                    if (ret && ret.length > 0) {
+                        htmltext += "<BR><B>Finder List</B><div  style='height:1px;background-color:#000000;line-height:1px;clear:both;display:block;overflow:hidden'></div>";
+                        //
+                        for (var i = 0; i < ret.length; i++) {
+                            var offsettop = ret[i].offsettop;
+                            var innertext = ret[i].innertext;
+                            var title = ret[i].title;
+                            //
+                            htmltext += "<div style=\"background-color:#FFFF99;border-style:double;word-wrap:break-word\">"
+                            htmltext += "<B>[ <a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a> ]</B><BR>";
+                            htmltext += title + "</div>";
+                        } 
+                    }
+                    //
+                    Show();
+                });
+            });
+		}
+
+		function convertHexColor(rgb) {
+			if (!rgb)
+				return '';
+			if (-1 == rgb.indexOf('rgb'))
+				return '';
+			//
+			var color = rgb.match(/\(.*\)/ig)[0].replace('(', '').replace(')', '');
+			//
+			var arr = color.split(',');
+			//
+			color = '#' + parseInt(arr[0]).toString(16) + parseInt(arr[1]).toString(16) + parseInt(arr[2]).toString(16);
+			//
+			return color;
+		}
+
+		function get_highlight() {
+            //
+		    function GetHighlight() {
+		        //
+		        var arrStyleAttributes = [];
+                //
+		        var styles = document.getElementsByTagName("FONT");
+		        var newStyles = document.querySelectorAll('span[data-wiz-span="data-wiz-span"]');
+		        //
+		        var arrStyle = [];
+		        for (var i = 0; i < styles.length; i ++) {
+		            arrStyle.push(styles[i]);
+		        }
+		        //
+		        for (var i = 0; i < newStyles.length; i ++) {
+		            if (-1 == arrStyle.indexOf(newStyles[i])) {
+		                arrStyle.push(newStyles[i]);
+		            }
+		        }
+		        for(var i = 0; i < arrStyle.length; i++)
+		        {
+		            var elem = arrStyle[i];
+		            var style = {
+		                "innertext": elem.innerText,
+		                "bkcolor": elem.style.backgroundColor,
+		                "offsettop": elem.offsetTop
+		            };
+		            arrStyleAttributes.push(style);
+		        }
+		        //
+		        return JSON.stringify(arrStyleAttributes);
+		    }
+		    //
+		    if (!objBrowser)
+		        return;
+		    //
+		    objBrowser.ExecuteScript(GetHighlight.toString(), function (ret) {
+                //
+		        objBrowser.ExecuteFunction0("GetHighlight", function (json) {
+		            if (json && json.length > 0) {
+		                var ret = JSON.parse(json);
+		                //
+		                htmltext += "<BR><B>Highlight List</B><div style='height:1px;background-color:#000000;line-height:1px;clear:both;display:block;overflow:hidden'></div>";
+                        //
+		                for (var i = 0; i < ret.length; i++) {
+		                    var innertext = ret[i].innertext;
+		                    var bkcolor = ret[i].bkcolor;
+		                    var offsettop = ret[i].offsettop;
+		                    //
+		                    if (innertext == "")
+		                        continue;
+		                    //
+		                    bkcolor = -1 != bkcolor.indexOf('rgb') ? convertHexColor(bkcolor) : bkcolor;
+		                    //
+		                    switch (bkcolor) {
+		                        case "#ffff66": 
+		                            htmltext += "<h2><FONT style=\"BACKGROUND-COLOR: #ffff66\">[分析]</FONT>&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a></h2>";      
+		                            break;
+		                        case "#ff8888":
+		                            htmltext += "<h2><FONT style=\"BACKGROUND-COLOR: #ff8888\">[注意]</FONT>&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a></h2>";
+		                            break;
+		                        case "#ffaaff":
+		                            htmltext += "<h2><FONT style=\"BACKGROUND-COLOR: #ffaaff\">[定义]</FONT>&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a></h2>";
+		                            break;
+		                        case "#84e384":
+		                            htmltext += "<h2><FONT style=\"BACKGROUND-COLOR: #84e384\">[优势]</FONT>&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a></h2>";
+		                            break;
+		                        case "#99ccff":
+		                            htmltext += "<h2><FONT style=\"BACKGROUND-COLOR: #99ccff\">[假设]</FONT>&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a></h2>";
+		                            break;
+		                        case "#d6acff":
+		                            htmltext += "<h2><FONT style=\"BACKGROUND-COLOR: #d6acff\">[缺陷]</FONT>&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a></h2>";
+		                            break;
+		                        case "#ffad5b":
+		                            htmltext += "<h2><FONT style=\"BACKGROUND-COLOR: #ffad5b\">[结论]</FONT>&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a></h2>";
+		                            break;
+		                        case "#fff200":
+		                            htmltext += "<h2><FONT style=\"BACKGROUND-COLOR: #fff200\">[黄标]</FONT>&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a></h2>";
+		                            break;
+		                        case "#ff7f27":
+		                            htmltext += "<h2><FONT style=\"BACKGROUND-COLOR: #ff7f27\">[红标]</FONT>&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a></h2>";
+		                            break;
+		                        case "#b5e61e":
+		                            htmltext += "<h2><FONT style=\"BACKGROUND-COLOR: #b5e61e\">[绿标]</FONT>&nbsp;&nbsp;<a href=\"javascript:void(0);\" onclick=\"gotoElem('" + offsettop + "');\">" + innertext + "</a></h2>";
+		                            break;
+		                        default:
+		                            break;
+		                    }
+		                }
+		            }
+		            //
+		            bGetHighlight = true;
+		            Show();
+		        });
+		    });
+		}
+		function Show() {
+		    if (bGetHighlight && bGetNote) {
+		        document.body.innerHTML = htmltext;
+		    }
+		}
+		
+		//document.write(htmltext);
+		
+		//document.write("<p align=\"right\"><font size=\"1\" color=\"#6666FF\">mod by <a //href=\"http://endware.blog.163.com/\"> endware </a><br>2011</font></p>");
+    </script>
+
+</body>
+</html>
