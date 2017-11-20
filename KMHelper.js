@@ -4,7 +4,7 @@ var objWindow = objApp.Window;
 var objDB = objApp.Database;
 var objCommon = objApp.CreateWizObject("WizKMControls.WizCommonUI");
 ////////////////////////////////////////////////////////////////////////////////////////////
-// read Wizhelper global settings
+// 读取为知助手全局设置
 function KMSettings(strKey) {
     var objDatabase = objApp.Database;
     var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
@@ -27,7 +27,6 @@ function KMSettings(strKey) {
     */
     // 通过objCommon接口读取
     strValue = objCommon.GetValueFromIni(languageFileName, "Common", strKey);
-    console.log(strValue);
     //
     return strValue;
 }
@@ -45,9 +44,7 @@ function RegKMButton() {
     var buttonTagsCloud = objApp.LoadStringFromFile(languageFileName, "buttonTagsCloud");
 
     //
-    if (objDatabase.GetMeta("wizhelp_parm","KEYWORD_FLAG") != "1") {
-        objDatabase.SetMeta("wizhelp_parm","KEYWORD_FLAG", "0");
-    }
+    if (objDatabase.GetMeta("wizhelp_parm","KEYWORD_FLAG") != "1") {objDatabase.SetMeta("wizhelp_parm","KEYWORD_FLAG", "0");}
     if (objDatabase.GetMeta("wizhelp_parm","SMARTTAG_FLAG") != "1") {objDatabase.SetMeta("wizhelp_parm","SMARTTAG_FLAG", "0");}
     if (objDatabase.GetMeta("wizhelp_parm","ALTKEY_FLAG") != "1") {objDatabase.SetMeta("wizhelp_parm","ALTKEY_FLAG", "0");}
     if (objDatabase.GetMeta("wizhelp_parm","DICTCN_FLAG") != "1") {objDatabase.SetMeta("wizhelp_parm","DICTCN_FLAG", "0");}
@@ -56,8 +53,6 @@ function RegKMButton() {
     var buttonHelper = objApp.LoadStringFromFile(languageFileName, "buttonHelper")+":"+objDatabase.Meta("wizhelp_parm","SMARTTAG_FLAG");
     var buttonAltkey = objApp.LoadStringFromFile(languageFileName, "buttonAltkey")+":"+objDatabase.Meta("wizhelp_parm","ALTKEY_FLAG");
     var buttonDictcn = objApp.LoadStringFromFile(languageFileName, "buttonDictcn")+":"+objDatabase.Meta("wizhelp_parm","DICTCN_FLAG");
-    //
-
     //
     // 判断用户自定义设置
     if (KMSettings("KMButtonsInMainMenu") == "1") {
@@ -82,7 +77,7 @@ function RegKMButton() {
     }
     
 }
-// 为知助手按钮
+// 为知助手按钮响应
 function OnKMHelperButtonClicked() {
     var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
     var helperFileName = pluginPath + "KMHelperEx.htm";
@@ -91,7 +86,7 @@ function OnKMHelperButtonClicked() {
     // left,top,right,bottom
     objWindow.ShowSelectorWindow(helperFileName, (parseInt(arr[0]) + parseInt(arr[2])) / 2, arr[3], 400, 500, "");
 }
-//
+// 笔记+响应
 function OnNotetakingButtonClicked() {
     var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
     var noteFileName = pluginPath + "KMNoteplus.htm";
@@ -100,18 +95,19 @@ function OnNotetakingButtonClicked() {
     var arr = rect.split(',');
     objWindow.ShowSelectorWindow(noteFileName, (parseInt(arr[0]) + parseInt(arr[2])) / 2, arr[3], 300, 500, "");
 }
-//
+// 主工具栏上的为知助手按钮响应
 function OnKMHelperExButtonClicked() {
+    // 增加文档打开状态判断
     if (objWindow.CurrentDocument != null) {
         var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
         var helperFileName = pluginPath + "KMHelperEx.htm";
         var rect = objWindow.GetToolButtonRect("main", "KMHelperExButton");
         var arr = rect.split(',');
         // left,top,right,bottom
-        objWindow.ShowSelectorWindow(helperFileName, (parseInt(arr[0]) + parseInt(arr[2])) / 2, arr[3], 300, 500, "");
+        objWindow.ShowSelectorWindow(helperFileName, (parseInt(arr[0]) + parseInt(arr[2])) / 2, arr[3], 400, 500, "");
     }
 }
-//
+// 最近文档按钮响应
 function OnKMRecentDocsButtonClicked() {
     var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
     var recentFileName = pluginPath + "KMRecentDocs.htm";
@@ -120,7 +116,7 @@ function OnKMRecentDocsButtonClicked() {
     var arr = rect.split(',');
     objWindow.ShowSelectorWindow(recentFileName, (parseInt(arr[0]) + parseInt(arr[2])) / 2, arr[3], 350, 510, "");
 }
-//
+// 标签云按钮响应
 function OnKMTagsCloudButtonClicked() {
     var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
     var cloudFileName = pluginPath + "KMTagsCloud.htm";
@@ -129,7 +125,7 @@ function OnKMTagsCloudButtonClicked() {
     var arr = rect.split(',');
     objWindow.ShowSelectorWindow(cloudFileName, (parseInt(arr[0]) + parseInt(arr[2])) / 2, arr[3], 620, 650, "");
 }
-//
+// 更改数据库Meta设置
 function OnKMSyntaxStatusButtonClicked() { OnKMStatusButtonClicked("KEYWORD_FLAG"); }
 function OnKMHelperStatusButtonClicked() { OnKMStatusButtonClicked("SMARTTAG_FLAG"); }
 function OnKMAltkeyStatusButtonClicked() { OnKMStatusButtonClicked("ALTKEY_FLAG"); }
@@ -144,29 +140,12 @@ function OnKMStatusButtonClicked(strFLAG) {
     }
     UpdateButtonStatus();
 }
-//
+// 更新主工具栏按钮状态
 function UpdateButtonStatus() {
     var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
     var languageFileName = pluginPath + "plugin.ini";
     //
     if (KMSettings("KMButtonsInMainMenu") == "1") {
-        var buttonSyntax = objApp.LoadStringFromFile(languageFileName, "buttonSyntax") + ":" + objDB.Meta("wizhelp_parm","KEYWORD_FLAG");
-        objWindow.RemoveToolButton("main", "KMSyntaxButton");
-        objWindow.AddToolButton("main", "KMSyntaxButton", buttonSyntax, "", "OnKMSyntaxStatusButtonClicked");
-        //
-        var buttonHelper = objApp.LoadStringFromFile(languageFileName, "buttonHelper") + ":" + objDB.Meta("wizhelp_parm","SMARTTAG_FLAG");
-        objWindow.RemoveToolButton("main", "KMHelperButton");
-        objWindow.AddToolButton("main", "KMHelperButton", buttonHelper, "", "OnKMHelperStatusButtonClicked");
-        //
-        var buttonAltkey = objApp.LoadStringFromFile(languageFileName, "buttonAltkey") + ":" + objDB.Meta("wizhelp_parm","ALTKEY_FLAG");
-        objWindow.RemoveToolButton("main", "KMAltkeyButton");
-        objWindow.AddToolButton("main", "KMAltkeyButton", buttonAltkey, "", "OnKMAltkeyStatusButtonClicked");
-        //
-        var buttonDictcn = objApp.LoadStringFromFile(languageFileName, "buttonDictcn") + ":" + objDB.Meta("wizhelp_parm","DICTCN_FLAG");
-        objWindow.RemoveToolButton("main", "KMDictcnButton");
-        objWindow.AddToolButton("main", "KMDictcnButton", buttonDictcn, "", "OnKMDictcnStatusButtonClicked");
-    }
-    else {
         var strRead = objApp.LoadStringFromFile(languageFileName, "strRead");
         var objDoc = objApp.Window.CurrentDocument;
         var readCount = objDoc.ReadCount - 1;
@@ -197,6 +176,27 @@ function UpdateButtonStatus() {
         objDB.SetMeta("TEST","MSG_500", pNote_title);
         objWindow.RemoveToolButton("main", "KMHelperExButton");
         objWindow.AddToolButton("main", "KMHelperExButton", "【" + pNote_title + "】", "", "OnKMHelperExButtonClicked");
+
+        /* 鸡肋，弃用
+        var buttonSyntax = objApp.LoadStringFromFile(languageFileName, "buttonSyntax") + ":" + objDB.Meta("wizhelp_parm","KEYWORD_FLAG");
+        objWindow.RemoveToolButton("main", "KMSyntaxButton");
+        objWindow.AddToolButton("main", "KMSyntaxButton", buttonSyntax, "", "OnKMSyntaxStatusButtonClicked");
+        //
+        var buttonHelper = objApp.LoadStringFromFile(languageFileName, "buttonHelper") + ":" + objDB.Meta("wizhelp_parm","SMARTTAG_FLAG");
+        objWindow.RemoveToolButton("main", "KMHelperButton");
+        objWindow.AddToolButton("main", "KMHelperButton", buttonHelper, "", "OnKMHelperStatusButtonClicked");
+        //
+        var buttonAltkey = objApp.LoadStringFromFile(languageFileName, "buttonAltkey") + ":" + objDB.Meta("wizhelp_parm","ALTKEY_FLAG");
+        objWindow.RemoveToolButton("main", "KMAltkeyButton");
+        objWindow.AddToolButton("main", "KMAltkeyButton", buttonAltkey, "", "OnKMAltkeyStatusButtonClicked");
+        //
+        var buttonDictcn = objApp.LoadStringFromFile(languageFileName, "buttonDictcn") + ":" + objDB.Meta("wizhelp_parm","DICTCN_FLAG");
+        objWindow.RemoveToolButton("main", "KMDictcnButton");
+        objWindow.AddToolButton("main", "KMDictcnButton", buttonDictcn, "", "OnKMDictcnStatusButtonClicked");
+        */
+    }
+    else {
+        return false;
     }
 }
 
@@ -215,6 +215,7 @@ function KMSleep(milliseconds) {
     for (var t = Date.now() ; Date.now() - t <= milliseconds;);
 }
 
+// 当文档加载完成事件触发时执行
 function KMOnHtmlDocumentComplete(objBrowser) {
     if (!objBrowser)
         return;
@@ -341,7 +342,8 @@ function Main() {
 }
 Main();
 
-function AddDictcn() {
+// 添加海词词典脚本
+function AddDictcn(objApp) {
     var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
     var objScript1 = document.createElement('script');
     objScript1.setAttribute('src', pluginPath + 'KMDictcn.js');
@@ -353,8 +355,10 @@ function DictcnAdd2Doc() {
     if (!objBrowser)
         return;
     //
-    objBrowser.ExecuteFunction0("AddDictcn", null);
-    //
+    objBrowser.ExecuteScript(AddDictcn.toString(), function(ret){
+        objBrowser.ExecuteFunction1("AddDictcn", objApp, null);
+    })
+    // 兼容模式??
     // WizAlert(objHtmlDocument.compatMode);
     // if (objHtmlDocument.compatMode == 'BackCompat') {
     //     WizAlert('yes');
@@ -370,13 +374,15 @@ function DictcnAdd2Doc() {
     // objScript2.text = "dictInit();";
     // objHtmlDocument.body.appendChild(objScript2);
 }
-//
+
+// 检查是否开启文档查词功能
 function KMCheckDictcn() {
     var objDatabase = objApp.Database;
     if (objDatabase.Meta("wizhelp_parm", "Dictcn_FLAG") == "1") {
         DictcnAdd2Doc();
     }
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 function KMShowListWindow(retJson) {
     var json = JSON.parse(retJson);
