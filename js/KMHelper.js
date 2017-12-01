@@ -217,11 +217,10 @@ function KMSleep(milliseconds) {
 
 // 当文档加载完成事件触发时执行
 function KMOnHtmlDocumentComplete(objBrowser) {
-    if (!objBrowser)
-        return;
+    if (!objBrowser) return false;
     //
     var pluginPath = objApp.GetPluginPathByScriptFileName("KMHelper.js");
-    var contentScriptPath = pluginPath + "KMContent.js";
+    var contentScriptPath = pluginPath + "js/KMContent.js";
     //
     objBrowser.ExecuteScriptFile(contentScriptPath, function (ret) {
         //
