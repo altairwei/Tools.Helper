@@ -81,7 +81,7 @@ function OnKMHelperButtonClicked() {
     var rect = objWindow.GetToolButtonRect("document", "KMHelperButton");
     var arr = rect.split(',');
     // left,top,right,bottom
-    objWindow.ShowSelectorWindow(helperFileName, (parseInt(arr[0]) + parseInt(arr[2])) / 2, arr[3], 400, 500, "");
+    objWindow.ShowSelectorWindow(helperFileName, (parseInt(arr[0]) + parseInt(arr[2])) / 2, arr[3], 400, 300, "");
 }
 
 // 笔记+文档工具栏按钮句柄
