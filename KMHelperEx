@@ -39,14 +39,14 @@
 			<td width="13%" nowrap="nowrap"><label id="strAuthor">Author</label> :</td>
 			<td id="ivalue_document_author">
 				<input id="textAuthor" type="text" onchange="return textAuthor_onchange()" style="width: 180px;" />
-				<img src="km_search.png" onclick="SearchByKeywords();" />
+				<img src="images/km_search.png" onclick="SearchByKeywords();" />
 			</td>
 		</tr>
 		<tr>
 			<td width="13%" nowrap="nowrap"><label id="strKeywords">Keywords</label> :</td>
 			<td id="ivalue_document_keyword">
 				<input id="textKeywords" type="text" onchange="return textKeywords_onchange()" style="width: 180px;" />
-				<img src="km_search.png" onclick="SearchByKeywords();"/>
+				<img src="images/km_search.png" onclick="SearchByKeywords();"/>
 			</td>
 		</tr>
 		<tr>
@@ -54,11 +54,11 @@
 			<td>
 				[ <label id="strRead">Read</label>
 				(<span id="ivalue_document_readcount"></span>) ]&nbsp;&nbsp;
-				<img style="vertical-align:middle;" id="rate1" src="km_star1.png" />
-				<img style="vertical-align:middle;" id="rate2" src="km_star1.png" />
-				<img style="vertical-align:middle;" id="rate3" src="km_star1.png" />
-				<img style="vertical-align:middle;" id="rate4" src="km_star1.png" />
-				<img style="vertical-align:middle;" id="rate5" src="km_star1.png" />&nbsp; 
+				<img style="vertical-align:middle;" id="rate1" src="images/km_star1.png" />
+				<img style="vertical-align:middle;" id="rate2" src="images/km_star1.png" />
+				<img style="vertical-align:middle;" id="rate3" src="images/km_star1.png" />
+				<img style="vertical-align:middle;" id="rate4" src="images/km_star1.png" />
+				<img style="vertical-align:middle;" id="rate5" src="images/km_star1.png" />&nbsp; 
 				<a href="javascript:removeRate();">(X)</a>
 			</td>
 		</tr>
@@ -516,8 +516,8 @@
 		}
 		//
 		var imgRateArray = [rate1, rate2, rate3, rate4, rate5];
-		var imgRateSrc1 = 'km_star1.png';
-		var imgRateSrc2 = 'km_star2.png';
+		var imgRateSrc1 = 'images/km_star1.png';
+		var imgRateSrc2 = 'images/km_star2.png';
 		//
 		function onRateImageClick() {
 			setDocRate(window.event.srcElement._num + 1);
